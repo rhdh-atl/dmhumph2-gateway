@@ -1,0 +1,68 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: dmhumph2-poi-gateway-app-dev
+  annotations:
+    argocd/app-name: dmhumph2-poi-gateway-app-dev
+    backstage.io/kubernetes-id: dmhumph2-poi-gateway-app
+    backstage.io/kubernetes-namespace: dmhumph2
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: rhdh-atl/dmhumph2-gateway
+    janus-idp.io/tekton-enabled: 'true'
+  tags:
+    - java
+    - quarkus
+    - maven
+    - workshop
+  links:
+    - url: https://console-openshift-console.apps.j0i9yf30.eastus2.aroapp.io/dev-pipelines/ns/dmhumph2/
+      title: Pipelines
+      icon: web
+    - url: https://console-openshift-console.apps.j0i9yf30.eastus2.aroapp.io/k8s/ns/dmhumph2/deployments/dmhumph2-poi-gateway-app
+      title: Deployment
+      icon: web
+    - url: https://devspaces.apps.j0i9yf30.eastus2.aroapp.io/#https://github.com/rhdh-atl/dmhumph2-gateway?che-editor=che-incubator/che-code/latest&devfilePath=.devfile-vscode.yaml
+      title: OpenShift Dev Spaces (VS Code)
+      icon: web
+spec:
+  type: service
+  lifecycle: production
+  owner: "user:default/dmhumph"
+  system: workshop-system-dmhumph2
+  providesApis:
+    - gateway-api-dmhumph2
+  consumesApis:
+    - backend-api-dmhumph2
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: workshop-system-dmhumph2
+  tags:
+    - backstage
+    - janus-idp
+    - openshift
+    - workshop
+    - rh-summit
+spec:
+  owner: "user:default/dmhumph"
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: gateway-api-dmhumph2
+  description: API surface exposed to interact with Backends (summit POIs + parks data) via the Gateway
+  links:
+    - url: http://dmhumph2-poi-gateway-app-dmhumph2.apps.j0i9yf30.eastus2.aroapp.io/q/swagger-ui
+      title: Swagger UI
+      icon: web
+    - url: https://github.com/rhdh-atl/dmhumph2-gateway/tree/main/src/main/resources/META-INF/openapi.yaml
+      title: API Spec
+      icon: code
+spec:
+  type: openapi
+  lifecycle: production
+  owner: "user:default/dmhumph"
+  system: workshop-system-dmhumph2
+  definition:
+    $text: https://github.com/rhdh-atl/dmhumph2-gateway/tree/main/src/main/resources/META-INF/openapi.yaml
